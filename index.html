@@ -3,15 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rugby Selection: Schelling</title>
+    <title>Rugby Team Segregation Model</title>
     <style>
         body { text-align: center; }
-        #gridCanvas { border: 1px solid #000; }
+        #gridContainer { display: flex; flex-direction: column; align-items: center; }
+        #column-labels { display: flex; justify-content: center; }
+        #gridCanvas { border: 1px solid #000; margin-top: 5px; }
+        .column-label { width: 50px; } /* Adjust the width to match your cellWidth */
+        .row-labels { display: flex; flex-direction: column; justify-content: center; }
+        .row-label { height: 50px; display: flex; align-items: center; justify-content: center; } /* Adjust the height to match your cellHeight */
         .control-panel { margin-top: 20px; }
     </style>
 </head>
 <body>
-    <canvas id="gridCanvas" width="400" height="300"></canvas>
+    <div id="gridContainer">
+        <div id="column-labels">
+            <!-- Column labels -->
+            <div class="column-label">1</div>
+            <div class="column-label">2</div>
+            <div class="column-label">3</div>
+            <div class="column-label">4</div>
+            <div class="column-label">5</div>
+            <div class="column-label">6</div>
+            <div class="column-label">7</div>
+            <div class="column-label">8</div>
+        </div>
+        <div style="display: flex;">
+            <div class="row-labels">
+                <!-- Row labels -->
+                <div class="row-label">1st  </div>
+                <div class="row-label">2nd  </div>
+                <div class="row-label">3rd  </div>
+                <div class="row-label">4th  </div>
+                <div class="row-label">5th  </div>
+                <div class="row-label">6th  </div>
+            </div>
+            <canvas id="gridCanvas" width="400" height="300"></canvas>
+        </div>
+    </div>
     <div class="control-panel">
         <button onclick="reset()">Reset</button>
         <button onclick="start()">Start</button>
@@ -20,7 +49,6 @@
         <div>Round <span id="round">0</span></div>
         <div>Satisfied <span id="satisfied">0</span>%</div>
     </div>
-
     <script src="simulation.js"></script>
 </body>
 </html>

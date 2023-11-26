@@ -7,13 +7,27 @@ let ctx = gridCanvas.getContext('2d');
 let grid = [];
 let timer = null;
 
-// Initialize grid with random agents
-function initializeGrid() {
+// Constants to represent player types
+const BRUTISH = 'red';
+const NON_BRUTISH = 'blue';
+
+// Agent constructor with fixed ability and variable brutishness
+function Agent(ability, brutishness) {
+    this.ability = ability; // Fixed ability across the season
+    this.brutishness = brutishness; // Variable brutishness
+    this.selected = false; // Whether the player is selected for the matchday squad
+}
+
+// Initialize agents with random or predefined properties
+function initializeAgents() {
     grid = [];
     for (let y = 0; y < gridHeight; y++) {
         let row = [];
         for (let x = 0; x < gridWidth; x++) {
-            row.push(Math.random() < 0.5 ? 1 : 2); // Randomly assign team 1 or team 2
+            // Randomly assign ability and brutishness
+            let ability = Math.random();
+            let brutishness = Math.random() < 0.5 ? BRUTISH : NON_BRUTISH;
+            row.push(new Agent(ability, brutishness));
         }
         grid.push(row);
     }
@@ -25,56 +39,53 @@ function drawGrid() {
     ctx.clearRect(0, 0, gridCanvas.width, gridCanvas.height);
     for (let y = 0; y < gridHeight; y++) {
         for (let x = 0; x < gridWidth; x++) {
-            ctx.fillStyle = grid[y][x] === 1 ? 'red' : 'blue';
+            let agent = grid[y][x];
+            ctx.fillStyle = agent.brutishness === BRUTISH ? 'red' : 'blue';
             ctx.fillRect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
         }
     }
 }
 
-// Update the grid by moving unsatisfied agents
-function updateGrid() {
-    // Add logic for moving unsatisfied agents
-    drawGrid();
-    updateStats();
+// Initialize the grid when the script loads
+initializeAgents();
+
+// Selection process based on brutishness and ability
+function weeklySelection() {
+    // Flatten the grid to a list of agents
+    let agents = grid.flat();
+
+    // Sort agents by ability, then by brutishness within the same ability level
+    agents.sort((a, b) => b.ability - a.ability || (b.brutishness === BRUTISH ? 1 : -1));
+
+    // Select the top 23 agents
+    agents.slice(0, 23).forEach(agent => agent.selected = true);
 }
 
-// Start the simulation
-function start() {
-    if (!timer) {
-        timer = setInterval(updateGrid, 100);
-    }
+// Simulate a round of the game
+function simulateRound() {
+    weeklySelection();
+
+    // Logic to simulate in-game performance based on brutishness and ability
+    // Distribute rewards and adjust brutishness for the next round
+    adjustBrutishness();
 }
 
-// Stop the simulation
-function stop() {
-    clearInterval(timer);
-    timer = null;
+// Adjust the brutishness of players based on performance
+function adjustBrutishness() {
+    // Logic to increase or decrease brutishness based on rewards
+    grid.flat().forEach(agent => {
+        if (agent.selected) {
+            // Simulate the effect of the game on brutishness
+            agent.brutishness = adjustBrutishnessBasedOnPerformance(agent.brutishness);
+        }
+    });
 }
 
-// Reset the simulation
-function reset() {
-    stop();
-    initializeGrid();
-    document.getElementById('round').textContent = '0';
-    document.getElementById('satisfied').textContent = '0';
+// A function to adjust brutishness based on performance
+function adjustBrutishnessBasedOnPerformance(currentBrutishness) {
+    // Placeholder for actual performance-based adjustment logic
+    return currentBrutishness; // Return the same brutishness for now
 }
-
-// Perform one step of the simulation
-function step() {
-    updateGrid();
-}
-
-// Update round and satisfaction stats
-function updateStats() {
-    // Add logic to calculate rounds and satisfaction percentage
-}
-
-
-
-
-
-
-
 
 // Initialize the grid when the script loads
-initializeGrid();
+initializeAgents();

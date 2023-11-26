@@ -1,0 +1,9 @@
+#simulation {
+    width: 600px;
+    margin: auto;
+    text-align: center;
+}
+
+canvas {
+    border: 1px solid black;
+}

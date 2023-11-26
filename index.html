@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rugby Selection: Schelling</title>
+    <style>
+        body { text-align: center; }
+        #gridCanvas { border: 1px solid #000; }
+        .control-panel { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <canvas id="gridCanvas" width="400" height="300"></canvas>
+    <div class="control-panel">
+        <button onclick="reset()">Reset</button>
+        <button onclick="start()">Start</button>
+        <button onclick="stop()">Stop</button>
+        <button onclick="step()">Step</button>
+        <div>Round <span id="round">0</span></div>
+        <div>Satisfied <span id="satisfied">0</span>%</div>
+    </div>
+
+    <script src="simulation.js"></script>
+</body>
+</html>

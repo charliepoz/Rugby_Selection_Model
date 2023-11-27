@@ -8,7 +8,8 @@
         body { text-align: center; }
         #gridContainer { display: flex; flex-direction: column; align-items: center; }
         #column-labels { display: flex; justify-content: center; }
-        #gridCanvas { border: 1px solid #000; margin-top: 5px; }
+        #gridCanvas { width: calc(8 * (50px)); /* 8 columns */
+            height: calc(6 * 50px + 20px); /* 6 rows with a gap after the third row */}
         .column-label { width: 50px; } /* Adjust the width to match your cellWidth */
         .row-labels { display: flex; flex-direction: column; justify-content: center; }
         .row-label { height: 50px; display: flex; align-items: center; justify-content: center; } /* Adjust the height to match your cellHeight */

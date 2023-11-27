@@ -1,7 +1,10 @@
 const gridWidth = 8;
-const gridHeight = 6;
-const cellWidth = 50;
-const cellHeight = 50;
+const gridHeight = 8;
+const cellWidth = 40;
+const cellHeight = 40;
+const columnSpacing = 8; // Space between columns
+const rowGap = 20; // Gap between the third and fourth row
+const cellOutline = 1; // Width of the cell outline
 let gridCanvas = document.getElementById('gridCanvas');
 let ctx = gridCanvas.getContext('2d');
 let grid = [];
@@ -34,16 +37,42 @@ function initializeAgents() {
     drawGrid();
 }
 
-// Draw the grid on canvas
 function drawGrid() {
+    // Adjust the starting position for drawing
+    let currentX = columnSpacing;
+    let currentY = 0;
+    
     ctx.clearRect(0, 0, gridCanvas.width, gridCanvas.height);
+
     for (let y = 0; y < gridHeight; y++) {
+        // Adjust Y position for the gap after the third row
+        if (y === 3) {
+            currentY += rowGap;
+        }
+
         for (let x = 0; x < gridWidth; x++) {
             let agent = grid[y][x];
             ctx.fillStyle = agent.brutishness === BRUTISH ? 'red' : 'blue';
-            ctx.fillRect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
+            // Draw the filled rectangle for the agent
+            ctx.fillRect(currentX, currentY, cellWidth, cellHeight);
+            // Draw a white outline around the rectangle
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = cellOutline;
+            ctx.strokeRect(currentX, currentY, cellWidth, cellHeight);
+
+            // Move to the next column, adjust for spacing
+            currentX += cellWidth + columnSpacing;
         }
+        // Reset X position for the next row and move down
+        currentX = columnSpacing;
+        currentY += cellHeight;
     }
+
+    // Draw a box around the top three rows
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 2;
+    // Adjust for the outline of the top-left cell
+    ctx.strokeRect(columnSpacing - cellOutline, 0, gridWidth * (cellWidth + columnSpacing) - columnSpacing, 3 * cellHeight + (cellOutline * 2));
 }
 
 // Initialize the grid when the script loads

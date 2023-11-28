@@ -17,12 +17,42 @@
     </style>
 </head>
 <body>
-    <div id="panel1"></div>
+    <div id="panel1">
+        <div id="group1" class="agent-group">
+            <!-- Agents for group 1 will be added here dynamically -->
+        </div>
+        <div id="group2" class="agent-group">
+            <!-- Agents for group 2 will be added here dynamically -->
+        </div>
+    </div>
     <div id="panel2"></div>
-    <div id="panel3">
+    <div id="panel3" class="control-panel">
         <button id="startButton">Start</button>
         <button id="stopButton">Stop</button>
-        <!-- Add other controls here -->
+        <button id="resetButton">Reset</button>
+        <button id="stepButton">Step</button>
+        
+        <!-- Parametric Sliders -->
+        <div>
+            <label for="similarSlider">Similar: <span id="similarValue">30%</span></label>
+            <input type="range" id="similarSlider" min="0" max="100" value="30">
+        </div>
+        <div>
+            <label for="ratioSlider">Red/Blue: <span id="ratioValue">50/50%</span></label>
+            <input type="range" id="ratioSlider" min="0" max="100" value="50">
+        </div>
+        <div>
+            <label for="emptySlider">Empty: <span id="emptyValue">10%</span></label>
+            <input type="range" id="emptySlider" min="0" max="100" value="10">
+        </div>
+        <div>
+            <label for="sizeSlider">Size: <span id="sizeValue">50x50</span></label>
+            <input type="range" id="sizeSlider" min="1" max="100" value="50">
+        </div>
+        <div>
+            <label for="delaySlider">Delay: <span id="delayValue">100ms</span></label>
+            <input type="range" id="delaySlider" min="0" max="1000" value="100">
+        </div>
     </div>
     <div id="panel4"></div>
 

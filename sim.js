@@ -61,6 +61,23 @@ function calculateGroupUtility(group) {
 document.getElementById("startButton").addEventListener("click", startSimulation);
 document.getElementById("stopButton").addEventListener("click", stopSimulation);
 
+document.addEventListener('DOMContentLoaded', (event) => {
+    function updateLabel(sliderId, labelId, units) {
+        var slider = document.getElementById(sliderId);
+        var label = document.getElementById(labelId);
+        slider.oninput = function() {
+            label.textContent = this.value + units;
+            // Here you would also update your simulation parameters
+        }
+    }
+
+    updateLabel('similarSlider', 'similarValue', '%');
+    updateLabel('ratioSlider', 'ratioValue', '%');
+    updateLabel('emptySlider', 'emptyValue', '%');
+    updateLabel('sizeSlider', 'sizeValue', ''); // No units for size, adjust as needed
+    updateLabel('delaySlider', 'delayValue', 'ms');
+});
+
 function startSimulation() {
     // Start or resume the simulation
 }

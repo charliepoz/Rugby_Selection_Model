@@ -7,3 +7,17 @@
 canvas {
     border: 1px solid black;
 }
+
+.agent-group {
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+}
+
+.agent {
+    width: 30px; /* Adjust the size as needed */
+    height: 30px;
+    border-radius: 50%; /* Makes the div circular */
+    background-color: green; /* Default color, will be set dynamically */
+    margin: 5px;
+}

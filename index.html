@@ -17,39 +17,16 @@
     </style>
 </head>
 <body>
-    <div id="gridContainer">
-        <div id="column-labels">
-            <!-- Column labels -->
-            <div class="column-label">1</div>
-            <div class="column-label">2</div>
-            <div class="column-label">3</div>
-            <div class="column-label">4</div>
-            <div class="column-label">5</div>
-            <div class="column-label">6</div>
-            <div class="column-label">7</div>
-            <div class="column-label">8</div>
-        </div>
-        <div style="display: flex;">
-            <div class="row-labels">
-                <!-- Row labels -->
-                <div class="row-label">1st  </div>
-                <div class="row-label">2nd  </div>
-                <div class="row-label">3rd  </div>
-                <div class="row-label">4th  </div>
-                <div class="row-label">5th  </div>
-                <div class="row-label">6th  </div>
-            </div>
-            <canvas id="gridCanvas" width="400" height="300"></canvas>
-        </div>
+    <div id="panel1"></div>
+    <div id="panel2"></div>
+    <div id="panel3">
+        <button id="startButton">Start</button>
+        <button id="stopButton">Stop</button>
+        <!-- Add other controls here -->
     </div>
-    <div class="control-panel">
-        <button onclick="reset()">Reset</button>
-        <button onclick="start()">Start</button>
-        <button onclick="stop()">Stop</button>
-        <button onclick="step()">Step</button>
-        <div>Round <span id="round">0</span></div>
-        <div>Satisfied <span id="satisfied">0</span>%</div>
-    </div>
-    <script src="simulation.js"></script>
+    <div id="panel4"></div>
+
+    <!-- Include your JavaScript file here -->
+    <script src="sim.js"></script>
 </body>
 </html>

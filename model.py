@@ -17,7 +17,7 @@ def compute_team_score(model):
 
     # Calculate the percentage of agents who have fought
     agents_fought = sum(agent.won_last_fight for agent in model.schedule.agents)
-    percent_fought = (agents_fought / N) * 100 if N else 0
+    percent_fought = (agents_fought / N) * 5 if N else 0
 
     # Subtract the percentage from the average team score
     adjusted_team_score = average_team_score - percent_fought
@@ -42,15 +42,12 @@ class PlayerAgent(mesa.Agent):
         # Select eligible opponents within the combined score range
         competition = [agent for agent in group_ranked if abs((agent.skill * agent.agent_type) - self_combined_score) <= 0.1]
         if not competition:
-            print("I had no competition")  # If no or only one agent in competition, no fight occurs
             return
         
         index = group_ranked.index(self)  # Find self in the ranked list
         adjacent = [agent for i, agent in enumerate(group_ranked) if abs(i - index) == 1 and agent in competition]
 
-
         if not adjacent:
-            #print("I had no adjacent competition")  # If no adjacent agents in competition, no fight occurs
             return
 
         opponent = random.choice(competition)  # Randomly choose an adjacent agent in competition
@@ -73,11 +70,16 @@ class PlayerAgent(mesa.Agent):
             # Also swap their positions in the group_ranked list to reflect the new rankings
             self.model.group_ranked[self.group][winner_index], self.model.group_ranked[self.group][loser_index] = \
             self.model.group_ranked[self.group][loser_index], self.model.group_ranked[self.group][winner_index]
-            # Winner increases type score by 0.05, capped at 1
-            winner.agent_type = min(winner.agent_type + 0.05, 1)
+           
+            #Winner Payoffs
+            winner.skill = min(winner.skill + 0.05, 5)  # More significant skill increase for winning
+            winner.agent_type = min(winner.agent_type + 0.05, 5)  # Small increase in type
 
-            # Loser decreases type score by 0.08, not falling below 0
-            loser.agent_type = max(loser.agent_type - 0.08, 0)
+            # Loser's Payoffs
+            loser.skill = max(loser.skill - 0.1, 0)  # Skill decrease for losing
+            loser.agent_type = min(loser.agent_type + 0.02, 5)  # Slight increase in type
+
+
             #print("I beat someone better than me")
 
         # Check if self is the winner
@@ -89,7 +91,8 @@ class PlayerAgent(mesa.Agent):
     
     def develop(self):
         # Increase the skill score by 0.05, ensure it does not exceed 5
-        self.skill = min(self.skill + 0.02, 5)
+        self.skill = min(self.skill + 0.05, 5)
+        self.agent_type = max(self.agent_type - 0.05, 0)
     
     def move(self):
         # Move the agent only if they won the last fight
@@ -126,7 +129,7 @@ class RugbyModel(mesa.Model):
         self.group_ranked = {'1': [], '2': []}
 
         # Mean and standard deviation for type and skill
-        mu_type, sigma_type = 0.5, 0.15
+        mu_type, sigma_type = 2.5, 1.0
         mu_skill, sigma_skill = 2.5, 1.0
 
         # Create agents
@@ -165,7 +168,8 @@ class RugbyModel(mesa.Model):
         # Rank agents at the start of each step
         for group_id in self.group_ranked:
             self.group_ranked[group_id].sort(key=lambda x: x.skill * x.agent_type)
-        
+    
+
         self.datacollector.collect(self)
 
         # The model's step will go here for now this will call the step method of each agent and print the agent's unique_id

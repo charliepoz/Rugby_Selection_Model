@@ -68,3 +68,4 @@ agent_scores_long.columns = ["Step", "AgentID", "Type", "Skill"]
 g = sns.lineplot(data=agent_scores_long, x="Step", y="Skill", errorbar=("ci", 95))
 g.set(title="Average Skill over time")
 plt.show()
+

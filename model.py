@@ -107,16 +107,15 @@ class PlayerAgent(mesa.Agent):
 
     def step(self):
         self.move()
-        # Randomly choose to fight or develop
         action = random.choice(['F', 'D'])
         if action == 'F':
             self.fight()
-            #print("I fought")
         else:
             self.develop()
-            #print("I developed")
-        
-        # Print the agent's action for demonstration purposes
+
+        # Increase skill if the agent is one of the top two
+        if hasattr(self, 'rank') and self.rank < 2:  # Checking if rank is less than 2 (top two agents)
+            self.skill = min(self.skill + 0.1, 5)
         #print(f"I am player {self.unique_id}. I chose to {'fight' if action == 'F' else 'develop'}. My type is {self.agent_type}, and my skill is {self.skill}.")
 
 class RugbyModel(mesa.Model):
@@ -159,9 +158,12 @@ class RugbyModel(mesa.Model):
     def rank_agents(self):
         # Rank the agents in each group by their combined score
         for group_id, agents in self.group_ranked.items():
-            sorted_agents = sorted(agents, key=lambda a: (a.skill * a.agent_type, -a.unique_id))
-            self.group_ranked[group_id] = sorted_agents  # Update the dictionary with sorted lists
-
+            sorted_agents = sorted(agents, key=lambda a: (a.skill * a.agent_type, -a.unique_id), reverse=True)
+            self.group_ranked[group_id] = sorted_agents
+            
+            # Assign rank to each agent
+            for rank, agent in enumerate(sorted_agents):
+                agent.rank = rank
 
     def step(self):
         """Advance the model by one step."""
